@@ -1,6 +1,8 @@
 package org.palemire;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -12,6 +14,12 @@ public class GenSourceFileVisitor extends SimpleFileVisitor<Path> {
             return FileVisitResult.CONTINUE;
 
         System.out.println("Crappy swagger post-processor plugin : visit file : " + file);
+
+        if (file.toString().endsWith("Controller.java")) {
+            System.out.println("Crappy swagger post-processor plugin : Delete irrelevant controller implementation : " + file);
+            Files.deleteIfExists(file);
+            return FileVisitResult.CONTINUE;
+        }
 
         BufferedReader reader = Files.newBufferedReader(file);
 
